@@ -38,19 +38,13 @@ x ?+ False = x
 
 isSafe :: [Int] -> Bool
 isSafe [] = False
-isSafe report
-    | checkWith safeAscend = True
-    | checkWith safeDescend = True
-    | otherwise = False
+isSafe report = checkWith safeAscend || checkWith safeDescend
     where
         checkWith x = isRight (foldM x (head report) (tail report))
 
 isSafeDampened :: [Int] -> Bool
 isSafeDampened [] = False
-isSafeDampened report
-    | isSafe report = True
-    | tryDampen report = True
-    | otherwise = False
+isSafeDampened report = isSafe report || tryDampen report 
     where
         tryDampen :: [Int] -> Bool
         tryDampen r =
